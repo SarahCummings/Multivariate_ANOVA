@@ -1,0 +1,35 @@
+#   Factor 1 has 3 levels
+#   Factor 2 has 4 levels 
+
+#   Given dataset for one single observation for each treatment combination for each response
+a<-c(6,8,4,6,8,12,2,6,3,8,-3,2,4,3,-4,3,-3,2,-4,-5,3,-3,-4,-6)
+
+#   Separating data for x1 and x2
+x1<-{}
+x2<-{}
+
+#   Looping through data and assigning to new group
+for (i in 1:length(a)){
+	if (i%%2==1){
+		x1<-cbind(x1,a[i])
+	} 
+	if (i%%2==0){
+		x2<-cbind(x2,a[i])
+	}
+}
+
+#   Recombining data
+y<-t(rbind(x1,x2))
+
+#   Generating factors by specifying the pattern of their levels
+factor1<-factor(gl(4,3),labels=c("L1","L2","L3","L4"))
+factor2<-factor(gl(3,1,length=12),labels=c("L1","L2","L3"))
+
+#   Multivariate Analysis of Variance
+fit<-manova(y~factor1+factor2)
+summary.aov(fit)
+
+#   Comparing with a Wilks test
+summary(fit,test="Wilks")
+
+#   Yielding similar result
