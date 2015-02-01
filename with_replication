@@ -1,0 +1,16 @@
+#   Each treatment combination is replicated twice
+x1<-c(6,14,4,6,8,8,2,16,3,1,-3,5,4,0,-4,2,-3,3,-4,-2,3,-11,-4,-6)
+x2<-c(8,8,6,2,12,2,6,-4,8,6,2,12,3,15,3,7,2,-2,-5,7,-3,1,-6,6)
+y<-cbind(x1,x2)
+
+#   Generating factors by specifying the pattern of their levels. 
+factor1<-factor(gl(4,6),labels=c("L1","L2","L3","L4"))
+factor2<-factor(gl(3,2,length=24),labels=c("L1","L2","L3"))
+
+#   Conducting MANOVA test considering factor interaction
+fit<-manova(y~factor1*factor2)
+summary.aov(fit)
+
+#   Comparing to a Wilks test and yielding similar result
+summary(fit,test="Wilks")
+
